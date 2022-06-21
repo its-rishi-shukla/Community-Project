@@ -39,10 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController email=TextEditingController();
   TextEditingController address=TextEditingController();
   TextEditingController pincode=TextEditingController();
-  TextEditingController _controller3 = TextEditingController();
-  String _valueChanged3 = '';
-  String _valueToValidate3 = '';
-  String _valueSaved3 = '';
+  String? _dayvalue = '';
+  String? _monvalue = '';
+  String? _yearvalue = '';
   TextEditingController highschoolcollegename=TextEditingController();
   TextEditingController highschoolboard=TextEditingController();
   TextEditingController highschoolpercent=TextEditingController();
@@ -193,12 +192,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     ), // optional
                     isDropdownHideUnderline: true, // optional
                     isFormValidator: true, // optional
-                    startYear: 1900, // optional
+                    startYear: 1950, // optional
                     endYear: 2020, // optional
                     width: 10, // optional
-                   // onChangedDay: (value) => print('onChangedDay: $value'),
-                    //onChangedMonth: (value) => print('onChangedMonth: $value'),
-                    //onChangedYear: (value) => print('onChangedYear: $value'),
+                   // onChangedDay: (_dayvalue) => print('onChangedDay: $_dayvalue'),
+                   //  onChangedMonth: (_monvalue) => print('onChangedMonth: $_monvalue'),
+                   //  onChangedYear: (_yearvalue) => print('onChangedYear: $_yearvalue'),
+                    onChangedDay: (value) => {
+                      _dayvalue=value,
+                    print('onChangedDay: $value'),
+                    },
+
+                    onChangedMonth: (value) =>{
+                      _monvalue=value,
+                      print('onChangedMonth: $value'),
+                      },
+
+                    onChangedYear: (value) => {
+                      _yearvalue=value,
+                    print('onChangedYear: $value'),
+                    },
+
                   ),
                 ],
               ),
@@ -235,14 +249,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       border: Border.all(color: Colors.grey),
                     ),
                     child: CustomDropdown(
-                      fillColor: Colors.alabaster,
+                     // fillColor: Colors.alabaster,
                       borderRadius: BorderRadius.circular(5),
                       hintText: 'Board',
                       hintStyle:  TextStyle(
                         color: Colors.grey[600],
                       ),
                       items: const ['State Board', 'CBSE Board', 'ICSE Board'],
-                      controller: intermediateboard,
+                      controller: highschoolboard ,
                     ),
                   ),
                   const SizedBox(
@@ -282,7 +296,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         border: Border.all(color: Colors.grey),
                     ),
                     child: CustomDropdown(
-                      fillColor: Colors.alabaster,
+                     // fillColor: Colors.alabaster,
                       borderRadius: BorderRadius.circular(5),
                       hintText: 'Board',
                       hintStyle:  TextStyle(
@@ -295,12 +309,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   const SizedBox(
                     height: 8,
                   ),
-                  TextField(
+                  TextFormField(
                     controller: intermediatepercent,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText:'Percent',
                     ),
+                    validator:(value){
+                      if(value != -1 && value!=101) {
+                        return null;
+                      }
+                      else {
+                        return "Invalid Entry";
+                      }
+                    },
                   ),
 
                 ],
@@ -343,6 +365,7 @@ class _MyHomePageState extends State<MyHomePage> {
             )
         ),
         Step(
+
           state: StepState.complete,
             isActive: _activeStepIndex>=3,
             title: const Text('Confimation'),
@@ -351,25 +374,95 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('Name           : ${name.text}'),
-                  Text('Father Name    : ${fname.text}'),
-                  Text('Mother Name    : ${mname.text}'),
-                  Text('Email : ${email.text}'),
-                  Text('Address : ${address.text}'),
-                  Text('Pin Code : ${pincode.text}'),
+                  ClipOval(child:_photo != null?Image.file(_photo!,width:250,height:250,fit:BoxFit.cover): Image.network('images/default-placeholder-image.png'),),
+                  const SizedBox(height: 40,),
+                  //Text('Name                  : ${name.text}'),
+                  apperance(
+                    title: 'Name',
+                    value: name.text,
+                    a: 180-46,
+                  ),
+                  //const SizedBox(height: 20,),
+                  //Text('Father Name     : ${fname.text}'),
+                  apperance(
+                    title: 'Father Name',
+                    value: fname.text,
+                    a: 137-46,
+                  ),
+                  //const SizedBox(height:20,),
+                  //Text('Mother Name    : ${mname.text}'),
+                  apperance(
+                    title: 'Mother Name',
+                    value: mname.text,
+                    a: 132-46,
+                  ),
+                  //Text('Email : ${email.text}'),
+                  apperance(
+                    title: 'Email',
+                    value: email.text,
+                    a: 183-46,
+                  ),
+                  //Text('Address : ${address.text}'),
+                  apperance(
+                    title: 'Address',
+                    value: address.text,
+                   // a: 166,
+                    a:120,
+                  ),
+                  //Text('Pin Code : ${pincode.text}'),
+                  apperance(
+                    title: 'Pin Code',
+                    value: pincode.text,
+                    a: 115,
+                  ),
+                  // Text('Date of Birth : ${_dayvalue}/${_monvalue}/${_yearvalue}',
+                  //   style: const TextStyle(
+                  //       fontWeight: FontWeight.bold
+                  // ),
+                  // ),
+                  Container(
+                  child: Row(
+                  children: [
+                  const Text('Date of Birth',style: TextStyle(
+                  fontWeight: FontWeight.bold
+                  ),
+                  ),
+                  SizedBox(width: 140-46,),
+                  Text('${_dayvalue}/${_monvalue}/${_yearvalue}',style: const TextStyle(
+                  fontWeight: FontWeight.w300
+                  ),
+                  ),
+                  ],
+                  ),
+                  ),
+                  const SizedBox(height: 30,),
                   Center(
                     child: Container(
                       child:const Text("High School Details",style: TextStyle(
                         color: Colors.grey,
                       ),),
                     ),
-
-                    //high school details
-
                   ),
-                  Text('School Name    : ${highschoolcollegename.text}'),
-                  Text('Board   : ${highschoolboard.text}'),
-                  Text('Percent    : ${highschoolpercent.text}'),
+                  const SizedBox(height: 20,),
+                  //Text('School Name     ${highschoolcollegename.text}'),
+                  apperance(
+                    title: 'School Name',
+                    value: highschoolcollegename.text,
+                    a: 88,
+                  ),
+                  //Text('Board    ${highschoolboard.text}'),
+                  apperance(
+                    title: 'Board',
+                    value: highschoolboard.text,
+                    a: 134,
+                  ),
+                  //Text('Percent    : ${highschoolpercent.text}'),
+                  apperance(
+                    title: 'Percent',
+                    value: highschoolpercent.text,
+                    a: 125,
+                  ),
+                  const SizedBox(height: 30,),
                   Center(
                     child: Container(
                       child:const Text("Intermediate Details",style: TextStyle(
@@ -377,11 +470,27 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),),
                     ),
                   ),
-                  Text('School Name    : ${intermediatecollegename.text}'),
-                  Text('Board   : ${intermediateboard.text}'),
-                  Text('Percent    : ${intermediatepercent.text}'),
-                  //intermediate details
-
+                  //Text('School Name    : ${intermediatecollegename.text}'),
+                  const SizedBox(height: 20,),
+                  apperance(
+                    title: 'School Name',
+                    value: intermediatecollegename.text,
+                    a: 88,
+                  ),
+                 // Text('Board   : ${intermediateboard.text}'),
+                  apperance(
+                    title: 'Board',
+                    value: intermediateboard.text,
+                    a: 134,
+                  ),
+                  //Text('Percent    : ${intermediatepercent.text}'),
+                  apperance(
+                    title: 'Percent',
+                    value: intermediatepercent.text,
+                    a: 125,
+                  ),
+                  const SizedBox(height: 40,),
+                  _signature != null?Image.file(_signature!,width:300,height:150,fit:BoxFit.cover): Image.network('images/default-placeholder-image.png'),
                 ],
               ) ,
             )
@@ -406,6 +515,28 @@ Widget CustomButton({
     ),
   );
 }
+Widget apperance({
+  required String title,
+  required String value,
+  required double a,
+}){
+  return Container(
+    child: Row(
+      children: [
+        Text(title,style: const TextStyle(
+            fontWeight: FontWeight.w900
+        ),
+        ),
+        SizedBox(width: a,),
+        Text(value,style: const TextStyle(
+            fontWeight: FontWeight.w300
+        ),
+        ),
+      ],
+    ),
+
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -422,6 +553,7 @@ Widget CustomButton({
            setState((){
 
            });
+           //onPressed:validate,
           },
           onStepCancel: (){
             if(_activeStepIndex!=0){

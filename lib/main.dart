@@ -489,7 +489,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Image.asset('images/default-placeholder-image.png'),
             ],
           )),
-          validation: () {}),
+          validation: () {
+
+          }),
       CoolStep(
           title: 'Confirmation',
           subtitle:
@@ -549,11 +551,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 // a: 166,
                 a: 78,
               ),
-              // Text('Date of Birth : ${_dayvalue}/${_monvalue}/${_yearvalue}',
-              //   style: const TextStyle(
-              //       fontWeight: FontWeight.bold
-              // ),
-              // ),
 
               const SizedBox(
                 height: 40,
@@ -627,6 +624,7 @@ class _MyHomePageState extends State<MyHomePage> {
       showErrorSnackbar: false,
       onCompleted: () {
         print('Steps completed!');
+
       },
       steps: steps,
       config: const CoolStepperConfig(
